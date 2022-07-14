@@ -1,3 +1,4 @@
+"use strict";
 import Converter from './converter.js';
 
 
@@ -15,27 +16,27 @@ function printResults(e) {
     let errorParag = document.getElementById("errorParag");
     
     let inputV = getInputValue();
-    let convertedNumber = new Converter(inputV);
-    convertedNumber.convert();
+    let converter = new Converter(inputV);
+    converter.convert();
 
-    numberParag.innerHTML = convertedNumber.inputValue;
-    binarParag.innerHTML = convertedNumber.binaryValue;
+    numberParag.innerHTML = converter.inputValue;
+    binarParag.innerHTML = converter.binaryValue;
     
-    if(convertedNumber.errorMsg){
-    errorParag.innerHTML = convertedNumber.errorMsg;
+    if(converter.errorMsg){
+    errorParag.innerHTML = converter.errorMsg;
     errorParag.style.color = 'red';
     
         setTimeout(function() {
             errorParag.style.display = 'none';
         }, 2000);
     }  
-    if (convertedNumber.inputFormat == convertedNumber.FORMAT_DEC) {
+    if (converter.inputFormat == converter.FORMAT_DEC) {
         
         inputFormatParag.innerHTML = '(has decimal format)';
-        hexaOrDecimalParag.innerHTML = 'hexadecimal is ' + convertedNumber.convertedValue;
-    } else if (convertedNumber.inputFormat == convertedNumber.FORMAT_HEX) {
+        hexaOrDecimalParag.innerHTML = 'hexadecimal is ' + converter.convertedValue;
+    } else if (converter.inputFormat == converter.FORMAT_HEX) {
         inputFormatParag.innerHTML = '(has hexadecimal format)';
-        hexaOrDecimalParag.innerHTML = 'decimal is ' + convertedNumber.convertedValue;
+        hexaOrDecimalParag.innerHTML = 'decimal is ' + converter.convertedValue;
     };
     }
     

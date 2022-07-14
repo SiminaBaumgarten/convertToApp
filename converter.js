@@ -1,9 +1,45 @@
+"use strict";
 export default class Converter{
 
 
 FORMAT_HEX = 1;
 FORMAT_DEC = 2;
-FORMAT_INVALID = 0; 
+FORMAT_INVALID = 0;
+BIN_DICTIONARY = { 
+    '0': "0000",
+    '1': "0001",
+    '2': "0010",
+    '3': "0011",
+    '4': "0100",
+    '5': "0101",
+    '6': "0110",
+    '7': "0111",
+    '8': "1000",
+    '9': "1001",
+    'a': "1010",
+    'b': "1011",
+    'c': "1100",
+    'd': "1101",
+    'e': "1110",
+    'f': "1111"
+};
+HEXA_DICTIONARY = {
+    'A': 10,
+    'B': 11,
+    'C': 12,
+    'D': 13,
+    'E': 14,
+    'F': 15,
+};
+
+TO_HEXA_DICTIONARY = {
+    10 : 'A' ,
+    11 : 'B',
+    12 : 'C',
+    '13' : 'D',
+    14 :'E',
+    '15' : 'F',
+};
 
 constructor(inputValue){
     this.inputValue = inputValue;
@@ -17,67 +53,14 @@ containsOnlyNumbers(inputValue) {
 
 
 convertToBinary(inputValue) {
-    let result;
-
-    for (let i = 0, r = ""; i < inputValue.length; i++) {
-        let chr = inputValue.substr(i, 1).toLowerCase();
-        switch (chr) {
-            case '0':
-                r += "0000";
-                break;
-            case '1':
-                r += "0001";
-                break;
-            case '2':
-                r += "0010";
-                break;
-            case '3':
-                r += "0011";
-                break;
-            case '4':
-                r += "0100";
-                break;
-            case '5':
-                r += "0101";
-                break;
-            case '6':
-                r += "0110";
-                break;
-            case '7':
-                r += "0111";
-                break;
-            case '8':
-                r += "1000";
-                break;
-            case '9':
-                r += "1001";
-                break;
-            case 'a':
-                r += "1010";
-                break;
-            case 'b':
-                r += "1011";
-                break;
-            case 'c':
-                r += "1100";
-                break;
-            case 'd':
-                r += "1101";
-                break;
-            case 'e':
-                r += "1110";
-                break;
-            case 'f':
-                r += "1111";
-                break;
-        }
-
-        if (i==inputValue.length-1) {
-            result = r;
-        }
+    let result = "";
+    
+    for (let i = 0; i < inputValue.length; i++) {
+        let chr = inputValue[i].toLowerCase();
+        result += this.BIN_DICTIONARY[chr];
      
     }
-       
+  
     return result;
 }
 
@@ -91,10 +74,11 @@ convertToHexa(inputValue) {
         i = (i - i % 16) / 16;
     }
     while (i > 0);
-
+   
     for (let j = 0; j < arr.length; j++) {
         if (arr[j] > 9) {
-            arr[j] = arr[j].toString(16).toUpperCase();
+            arr[j] = this.TO_HEXA_DICTIONARY[arr[j]];
+            //arr[j] = arr[j].toString(16).toUpperCase();
         } else {
             arr[j] = arr[j];
         }
@@ -111,7 +95,6 @@ removeHexSignature(inputValue) {
     let re = /^([0X]|[0X]|[#])/;
     let re2 = /^([x]|[X])/;
     let re3 = /h$/i;
-    console.log(re3);
     
     let inputWithoutOnePrefix = inputValue.replace(re, "");
     result1 = inputWithoutOnePrefix.replace(re2, "");
@@ -121,41 +104,21 @@ removeHexSignature(inputValue) {
 
 convertToDecimal(inputValue) {
     let result=0;
-    let digit;
     let numOfDigits;
     numOfDigits = inputValue.length;
     for (let i = 0; i < numOfDigits; i++) {
-
-        let chr = inputValue.substr(i, 1).toUpperCase();
-        switch (chr) {
-            case "A":
-                digit = 10;
-                break;
-            case "B":
-                digit = 11;
-                break;
-            case "C":
-                digit = 12;
-                break;
-            case "D":
-                digit = 13;
-                break;
-            case "E":
-                digit = 14;
-                break
-            case 'F':
-                digit = 15;
-                break;
-            default:
-                digit = Number(chr);
-
+        let chr = inputValue[i].toUpperCase();
+        let re = /[abcdef]/i;
+        if(re.test(inputValue[i])){
+            chr = this.HEXA_DICTIONARY[chr];
+        }else{
+            chr = chr;
         }
-        
-        result = result + digit * Math.pow(16, numOfDigits - 1 - i);
+        result = Number(result) + Number(chr) * Math.pow(16, numOfDigits - 1 - i);
+        };
+        return result;
+    };
 
-    }
-    return result;
-}
 
 detectInputFormat(inputValue) {
     let result = "";
