@@ -1,28 +1,25 @@
 "use strict";
 export default class Converter{
 
-
-FORMAT_HEX = 1;
-FORMAT_DEC = 2;
-FORMAT_INVALID = 0;
 BIN_DICTIONARY = { 
-    '0': "0000",
-    '1': "0001",
-    '2': "0010",
-    '3': "0011",
-    '4': "0100",
-    '5': "0101",
-    '6': "0110",
-    '7': "0111",
-    '8': "1000",
-    '9': "1001",
-    'a': "1010",
-    'b': "1011",
-    'c': "1100",
-    'd': "1101",
-    'e': "1110",
-    'f': "1111"
-};
+        '0': "0000",
+        '1': "0001",
+        '2': "0010",
+        '3': "0011",
+        '4': "0100",
+        '5': "0101",
+        '6': "0110",
+        '7': "0111",
+        '8': "1000",
+        '9': "1001",
+        'a': "1010",
+        'b': "1011",
+        'c': "1100",
+        'd': "1101",
+        'e': "1110",
+        'f': "1111"
+    };
+
 HEXA_DICTIONARY = {
     'A': 10,
     'B': 11,
@@ -36,21 +33,16 @@ TO_HEXA_DICTIONARY = {
     10 : 'A' ,
     11 : 'B',
     12 : 'C',
-    '13' : 'D',
+    13 : 'D',
     14 :'E',
-    '15' : 'F',
+    15 : 'F',
 };
 
-constructor(inputValue){
-    this.inputValue = inputValue;
+base;
+
+constructor(base){
+   this.base=base;
 };
-
-containsOnlyNumbers(inputValue) {
-    let pattern = /^[0-9]*$/;
-    return pattern.test(inputValue);
-}
-
-
 
 convertToBinary(inputValue) {
     let result = "";
@@ -63,7 +55,6 @@ convertToBinary(inputValue) {
   
     return result;
 }
-
 convertToHexa(inputValue) {
     let result;
 
@@ -89,18 +80,7 @@ convertToHexa(inputValue) {
     return result;
 }
 
-removeHexSignature(inputValue) {
-    let result = '';
-    let result1 = '';
-    let re = /^([0X]|[0X]|[#])/;
-    let re2 = /^([x]|[X])/;
-    let re3 = /h$/i;
-    
-    let inputWithoutOnePrefix = inputValue.replace(re, "");
-    result1 = inputWithoutOnePrefix.replace(re2, "");
-    result = result1.replace(re3, "");
-    return result;
-}
+
 
 convertToDecimal(inputValue) {
     let result=0;
@@ -119,54 +99,5 @@ convertToDecimal(inputValue) {
         return result;
     };
 
-
-detectInputFormat(inputValue) {
-    let result = "";
-    if (this.containsOnlyNumbers(inputValue)) {
-        result = this.FORMAT_DEC;
-    } else {
-        result = this.FORMAT_HEX;
-    }
-
-    return result;
-}
-
-validateInput(inputValue) {
-    let result = true;
-    let pattern = /^#*([a-f]|[A-F]|[0-9]|[0x]|[0X]|[hH])*$/;
-    if (pattern.test(inputValue)) {
-        result = true;
-    } else {
-        result = false;
-    }
-    //check if input contains non-hexa & non-numeric characters and chars is one of the #, x, h.
-
-    
-    return result;
-}
-
-convert() {
-  
-    
-    let inputIsValid = this.validateInput(this.inputValue);
-
-    if (inputIsValid) {
-        this.inputFormat = this.detectInputFormat(this.inputValue);
-        if (this.inputFormat == this.FORMAT_HEX) {
-            this.inputValue = this.removeHexSignature(this.inputValue);
-            this.convertedValue = this.convertToDecimal(this.inputValue);
-        } else if (this.inputFormat == this.FORMAT_DEC) {
-            this.convertedValue = this.convertToHexa(this.inputValue);
-        } else {
-            this.errorMsg = "Unkown Input Format";
-        }
-        
-        this.binaryValue = this.convertToBinary(this.inputValue, this.inputFormat);
-            
-       
-    } else {
-        this.errorMsg = "Invalid input";
-    }  
-}
 
 }
