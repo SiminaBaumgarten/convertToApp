@@ -1,5 +1,5 @@
 "use strict";
-import Converter from './converter.js';
+import myConverter from './converter.js';
 
 const FORMAT_HEX = 1;
 const FORMAT_DEC = 2;
@@ -54,9 +54,10 @@ function convert(inputValue) {
     let convertedValue;
     let binaryValue;
     let inputIsValid;
+    let errorMsg;
     inputIsValid= validateInput(inputValue);
     
-    let converter = new Converter(-1);
+    let converter = new myConverter(-1);
     //todo: use base inside convertor
     if (inputIsValid) {
     
@@ -64,13 +65,15 @@ function convert(inputValue) {
         if (inputFormat == FORMAT_HEX) {
             inputValue = removeHexSignature(inputValue);
             convertedValue = converter.convertToDecimal(inputValue);
+            binaryValue = converter.convertToBinary(inputValue);
         } else if (inputFormat == FORMAT_DEC) {
             convertedValue = converter.convertToHexa(inputValue);
+            binaryValue = converter.convertToBinary(convertedValue);
         } else {
             errorMsg = "Unkown Input Format";
         }
         
-        binaryValue = converter.convertToBinary(inputValue);
+        //binaryValue = converter.convertToBinary(inputValue);
             
        
     } else {

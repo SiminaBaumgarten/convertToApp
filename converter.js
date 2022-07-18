@@ -1,5 +1,5 @@
 "use strict";
-export default class Converter{
+export default class myConverter{
 
 BIN_DICTIONARY = { 
         '0': "0000",
@@ -100,4 +100,23 @@ convertToDecimal(inputValue) {
     };
 
 
+}
+
+class Converter {
+    convertToBinary(inputValue) {
+        return (parseInt(inputValue, 16).toString(2)).padStart(8, '0');   
+    }
+    
+    convertToHexa(inputValue) {
+        return Math.abs(inputValue).toString(16).toLocaleUpperCase();
+    }
+    
+    convertToDecimal(inputValue) {
+        return parseInt(inputValue, 16);
+    
+    }
+}
+
+class Factory {
+    
 }
