@@ -119,4 +119,26 @@ class Converter {
 
 class Factory {
     
-}
+    create = (base, converterType) => {
+
+        if(!converterType) {
+            return "unable to make the convert. Please specify a converter type and try again!"
+        }
+
+        let converter;
+        
+        if (converterType === "myConverter") {
+            converter = new myConverter(base);
+        } else if (converterType === "Converter") {
+            converter = new Converter(base);
+        } 
+
+        converter.converterType = converterType;
+
+        converter.convert = () => console.log(`Convert with ${converterType}`);
+    
+        return converter;
+    }
+};
+
+const converterFactory = new Factory();
