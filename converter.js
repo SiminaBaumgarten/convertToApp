@@ -44,11 +44,11 @@ constructor(base){
    this.base=base;
 };
 
-convertToBinary(inputValue) {
+convertToBinary(iV) {
     let result = "";
     
-    for (let i = 0; i < inputValue.length; i++) {
-        let chr = inputValue[i].toLowerCase();
+    for (let i = 0; i < iV.length; i++) {
+        let chr = iV[i].toLowerCase();
         result += this.BIN_DICTIONARY[chr];
      
     }
@@ -117,28 +117,4 @@ class Converter {
     }
 }
 
-class Factory {
-    
-    create = (base, converterType) => {
 
-        if(!converterType) {
-            return "unable to make the convert. Please specify a converter type and try again!"
-        }
-
-        let converter;
-        
-        if (converterType === "myConverter") {
-            converter = new myConverter(base);
-        } else if (converterType === "Converter") {
-            converter = new Converter(base);
-        } 
-
-        converter.converterType = converterType;
-
-        converter.convert = () => console.log(`Convert with ${converterType}`);
-    
-        return converter;
-    }
-};
-
-const converterFactory = new Factory();
